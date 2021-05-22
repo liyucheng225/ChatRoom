@@ -19,12 +19,15 @@ bool UserModel::getUserstate() {
 void UserModel::setUserName(string userName) {
     this->userName = userName;
 }
+
 void UserModel::setUserPasswd(string userPasswd) {
     this->userPasswd = userPasswd;
 }
+
 void UserModel::setUserId(int userId) {
     this->userId = userId;
 }
+
 void UserModel::setUserState(bool state) {
     this->state = state;
 }   
