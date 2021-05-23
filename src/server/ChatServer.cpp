@@ -1,21 +1,21 @@
 #include <functional>
 #include <string>
 #include <iostream>
-#include "../../include/server/ChatServer.h"
-#include "../../include/server/ChatServer.h"
-#include <json.hpp>
+// #include "ChatService.h"
+#include "ChatServer.h"
+#include "json.hpp"
 using json = nlohmann::json;
 using namespace std;
-using namespace placeholders;
+
 //初始化聊天服务器对象
 ChatServer::ChatServer(muduo::net::EventLoop *loop, const muduo::net::InetAddress &listenAddr, const string &nameArg)
     : server_(loop, listenAddr, nameArg),
       loop_(loop) {
-    //注册连接回调
-    server_.setConnectionCallback(bind(&ChatServer::on_connection, this, _1));
+    // //注册连接回调
+    // server_.setConnectionCallback(bind(&ChatServer::on_connection, this, _1));
 
-    //注册消息回调
-    server_.setMessageCallback(bind(&ChatServer::on_message, this, _1, _2, _3));
+    // //注册消息回调
+    // server_.setMessageCallback(bind(&ChatServer::on_message, this, _1, _2, _3));
 
     //设置线程数量
     server_.setThreadNum(4);
@@ -43,7 +43,7 @@ void ChatServer::on_message(const muduo::net::TcpConnectionPtr &conn, muduo::net
     string buf = buffer->retrieveAllAsString();
     cout<<"exute: "<<buf<<endl;
     //数据反序列化
-    json js = json::parse(buf);
+    // json js = json::parse(buf);
     // Json::Value root(buf);
     //解耦网络和业务模块的代码
     //通过js里面的msgid，绑定msgid的回调函数，获取业务处理器handler

@@ -1,13 +1,17 @@
 #ifndef CHATSERVICE_H
 #define CHATSERIVCE_H
 #include <mutex>
+#include <unordered_map>
 #include <muduo/net/TcpConnection.h>
-#include <jsoncpp/json/json.h>
+#include "ChatServer.h"
 #include "json.hpp"
+// #include "UserModel.h"
+#include "OfflineMessageModel.h"
+#include "FriendModel.h"
+#include "GroupModel.h"
 
 using json = nlohmann::json;
 using namespace std;
-
 using MsgHandler = function<void(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time)>;
 
 class ChatService
@@ -62,6 +66,11 @@ private:
     /*存储在线用户的链接情况，便于服务器给用户发消息，注意线程安全*/
     unordered_map<int,muduo::net::TcpConnectionPtr> user_connection_map;
     mutex conn_mutex;
+
+    // UserModel userModel;
+    OfflineMessageModel offlineMessageModel;
+    FriendModel friendModel;
+    GroupModel groupModel;
 };
 
 

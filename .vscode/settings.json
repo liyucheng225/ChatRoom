@@ -1,6 +1,14 @@
 {
     "files.associations": {
         "iostream": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "bitset": "cpp",
+        "fstream": "cpp",
+        "sstream": "cpp",
+        "stdexcept": "cpp",
+        "tuple": "cpp",
+        "typeinfo": "cpp"
     }
 }
