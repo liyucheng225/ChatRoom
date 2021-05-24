@@ -7,7 +7,7 @@ using namespace std;
 
 //
 void reset_handler(int) {
-    cout << "ctrl+c" << endl;
+    cout << endl << "ctrl+c 程序强制结束处理函数！" << endl;
     exit(0);
 }
 
@@ -17,11 +17,7 @@ int main (int argc, char * argv[]) {
         exit(-1);
     }
     uint16_t port = static_cast<uint16_t>(atoi(argv[1]));
-    signal(SIGINT,reset_handler); //
-    MySQL mysql;
-    if (mysql.connet()) {
-        cout << "af";
-    }
+    signal(SIGINT,reset_handler);  //
     muduo::net::EventLoop loop;
     muduo::net::InetAddress listenAddr(2007);
     ChatServer server(&loop, listenAddr, "chatServer");

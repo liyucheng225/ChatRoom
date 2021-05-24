@@ -2,6 +2,7 @@
 #define USERMODEL_H
 
 #include "User.h"
+class User;
 
 class UserModel
 {
