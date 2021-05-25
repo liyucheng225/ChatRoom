@@ -18,5 +18,7 @@ public:
 
     //查询用户的聊天消息
     vector<string> query(int id);
+    OfflineMessageModel();
+    ~OfflineMessageModel();
 };
 #endif

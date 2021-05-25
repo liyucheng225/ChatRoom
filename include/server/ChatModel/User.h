@@ -18,6 +18,7 @@ public:
     string getUserName();
     string getUserPasswd();
     bool getUserstate();
+    User();
     ~User();
 private:
     /* data */

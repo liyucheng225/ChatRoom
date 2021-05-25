@@ -5,7 +5,7 @@
 #include <muduo/net/TcpConnection.h>
 #include "ChatServer.h"
 #include "json.hpp"
-// #include "UserModel.h"
+#include "UserModel.h"
 #include "OfflineMessageModel.h"
 #include "FriendModel.h"
 #include "GroupModel.h"
@@ -67,7 +67,7 @@ private:
     unordered_map<int,muduo::net::TcpConnectionPtr> user_connection_map;
     mutex conn_mutex;
 
-    // UserModel userModel;
+    UserModel userModel;
     OfflineMessageModel offlineMessageModel;
     FriendModel friendModel;
     GroupModel groupModel;

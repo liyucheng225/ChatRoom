@@ -1,5 +1,11 @@
 #include "User.h"
 
+User::User(int userId, string userName, string userPasswd, bool state) {
+    this->userId =userId;
+    this->userName = userName;
+    this->userPasswd = userPasswd;
+    this->state = state;
+}
 int User::getUserId() {
     return userId;
 }
@@ -31,3 +37,9 @@ void User::setUserId(int userId) {
 void User::setUserState(bool state) {
     this->state = state;
 }   
+User::User() {
+
+}
+User::~User() {
+
+}

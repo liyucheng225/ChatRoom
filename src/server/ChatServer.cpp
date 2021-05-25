@@ -1,7 +1,7 @@
 #include <functional>
 #include <string>
 #include <iostream>
-// #include "ChatService.h"
+#include "ChatService.h"
 #include "ChatServer.h"
 #include "json.hpp"
 using json = nlohmann::json;
@@ -43,11 +43,11 @@ void ChatServer::on_message(const muduo::net::TcpConnectionPtr &conn, muduo::net
     string buf = buffer->retrieveAllAsString();
     cout<<"exute: "<<buf<<endl;
     //数据反序列化
-    // json js = json::parse(buf);
+    json js = json::parse(buf);
     // Json::Value root(buf);
     //解耦网络和业务模块的代码
     //通过js里面的msgid，绑定msgid的回调函数，获取业务处理器handler
-    //auto msg_handler = ChatService::instance()->get_handler(root["msgid"].get<int>());
+    // auto msg_handler = ChatService::instance()->get_handler(js["msgid"].get<int>());
 
     //其实这个msg_handler就是login或者regist
     // msg_handler(conn, js, time);

@@ -12,9 +12,11 @@ class FriendModel
 public:
     //添加好友关系
     bool insert(int user_id, int friend_id);
-
+    
     //返回用户好友列表
     vector<User> query(int user_id);
+    FriendModel();
+    ~FriendModel();
 };
 
 #endif

@@ -13,7 +13,7 @@ libModel = -lmuduo_net  -lmuduo_base -lpthread -lmysqlclient
 
 all:$(CharServer) $(CharService) $(libServer) $(main)
 $(CharServer):ChatServer.cpp
-	g++ -c $^ -I $(include) -I $(thirdInclude)  $(libModel)  -o $@ -fPIC
+	g++ -c $^ -I $(include) -I $(thirdInclude) -I $(dbInclude) -I $(modelInclude)   $(libModel)  -o $@ -fPIC
 $(CharService):ChatService.cpp
 	g++ -c $^ -I $(include) -I $(thirdInclude) -I $(dbInclude) -I $(modelInclude)  $(libModel) -o $@ -fPIC
 $(libServer):$(CharServer) $(CharService)

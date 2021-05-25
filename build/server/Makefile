@@ -1,4 +1,4 @@
-SECTIONS  = ../../src/server/
+SECTIONS  =  ../../src/server/ChatModel ../../src/server/
 all:
 	for dir in $(SECTIONS);do $(MAKE) -C $$dir || exit "$$?";done
 .PHONY:clean

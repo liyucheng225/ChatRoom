@@ -1,8 +1,8 @@
-#ifndef USERMODEL_H
-#define USERMODEL_H
+// #ifndef USERMODEL_H
+// #define USERMODEL_H
 
-#include "User.h"
-class User;
+#include "./User.h"
+// class User;
 
 class UserModel
 {
@@ -25,4 +25,4 @@ public:
 };
 
 
-#endif
+// #endif
