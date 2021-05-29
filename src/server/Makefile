@@ -23,4 +23,4 @@ $(main):main.cpp
 
 .PHONY:clean
 clean:
-	rm $(CharServer) $(CharService) $(libServer) $(main)
+	rm  $(libServer) $(main)

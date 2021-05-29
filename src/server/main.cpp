@@ -19,7 +19,7 @@ int main (int argc, char * argv[]) {
     uint16_t port = static_cast<uint16_t>(atoi(argv[1]));
     signal(SIGINT,reset_handler);  //
     muduo::net::EventLoop loop;
-    muduo::net::InetAddress listenAddr(2007);
+    muduo::net::InetAddress listenAddr(port);
     ChatServer server(&loop, listenAddr, "chatServer");
     server.start();
     loop.loop();

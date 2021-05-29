@@ -25,7 +25,7 @@ public:
     }
 
     //连接数据库
-    bool connet() {
+    bool connect() {
         MYSQL *p = mysql_real_connect(conn, SERVER , USER, PASSWD, BASENAME, 0, nullptr, 0);
         if (p != nullptr) {
             //代码支持中文，因为默认是ASCII
@@ -41,6 +41,7 @@ public:
 
     //更新操作
     bool update(string sql) {
+        cout << "update" << endl;
         if (mysql_query(conn, sql.c_str())) {
             LOG_INFO << __FILE__ << " : " << __LINE__ << " : " << sql << " update error!";
             return false;

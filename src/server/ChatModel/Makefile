@@ -9,5 +9,4 @@ $(OBJS):%.o:%.cpp
 %.o:%.cpp
 	g++ -c $< $(INCLUDE)  -o $(OBJ)/$@	
 clean:	
-	rm -f $(OBJS)
-	rm -f $(OBJ)
+	rm -f $(OBJ)/*.o
