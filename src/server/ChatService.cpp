@@ -16,15 +16,15 @@ void ChatService::createRandNum(string &id) {
     }
 }
 ChatService::ChatService() {
-    msg_handler_map.insert({LOG_MSG_GO, bind(&ChatService::login, this, _1, _2, _3)}); //µÇÂ½
-    msg_handler_map.insert({LOGINOUT_MSG, bind(&ChatService::loginOut, this, _1, _2, _3)}); //×¢Ïú
-    msg_handler_map.insert({REG_MSG_GO, bind(&ChatService::regist, this, _1, _2, _3)}); //×¢²á
-    msg_handler_map.insert({ONE_CHAT_MSG, bind(&ChatService::oneChat, this, _1, _2, _3)});//Ë½ÁÄ
-    msg_handler_map.insert({ADD_FRIEND_MSG, bind(&ChatService::addFriend, this, _1, _2, _3)});//Ìí¼ÓºÃÓÑ
-    msg_handler_map.insert({CREATE_GROUP_MSG, bind(&ChatService::createGroup, this, _1, _2, _3)});//´´½¨Èº×é
-    msg_handler_map.insert({ADD_GROUP_MSG, bind(&ChatService::addGroup, this, _1, _2, _3)});//Ìí¼ÓÈº×é
-    msg_handler_map.insert({GROUP_CHAT_MSG, bind(&ChatService::groupMsg, this, _1, _2, _3)});//ÈºÁÄ
-    msg_handler_map.insert({SEARCH_CHATRECORD_GO, bind(&ChatService::searchRecord, this, _1, _2, _3)});//²éÕÒÁÄÌì¼ÇÂ¼
+    msg_handler_map.insert({LOG_MSG_GO, bind(&ChatService::login, this, _1, _2, _3)}); //ç™»é™†
+    msg_handler_map.insert({LOGINOUT_MSG, bind(&ChatService::loginOut, this, _1, _2, _3)}); //æ³¨é”€
+    msg_handler_map.insert({REG_MSG_GO, bind(&ChatService::regist, this, _1, _2, _3)}); //æ³¨å†Œ
+    msg_handler_map.insert({ONE_CHAT_MSG, bind(&ChatService::oneChat, this, _1, _2, _3)});//ç§èŠ
+    msg_handler_map.insert({ADD_FRIEND_MSG, bind(&ChatService::addFriend, this, _1, _2, _3)});//æ·»åŠ å¥½å‹
+    msg_handler_map.insert({CREATE_GROUP_MSG, bind(&ChatService::createGroup, this, _1, _2, _3)});//åˆ›å»ºç¾¤ç»„
+    msg_handler_map.insert({ADD_GROUP_MSG, bind(&ChatService::addGroup, this, _1, _2, _3)});//æ·»åŠ ç¾¤ç»„
+    msg_handler_map.insert({GROUP_CHAT_MSG, bind(&ChatService::groupMsg, this, _1, _2, _3)});//ç¾¤èŠ
+    msg_handler_map.insert({SEARCH_CHATRECORD_GO, bind(&ChatService::searchRecord, this, _1, _2, _3)});//æŸ¥æ‰¾èŠå¤©è®°å½•
 }
 
 MsgHandler ChatService::get_handler(int msgId) {
@@ -37,16 +37,16 @@ MsgHandler ChatService::get_handler(int msgId) {
     }
 
 }
-/*µÇÂ¼ÒµÎñ*/
+/*ç™»å½•ä¸šåŠ¡*/
 void ChatService::login(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
     cout << js << "1" <<endl;;
     string id = js["id"];
     string passwd = js["passwd"];
     User user = userModel.query(id);
-     cout << "2" << js;
+    cout << "ç”¨æˆ·æŸ¥è¯¢ç»“æŸ" << user.getUserId() << user.getUserPasswd()  << "state:" << user.getUserstate() <<  endl;
     if (user.getUserPasswd() == passwd && user.getUserId()== id) {
-        /*²éÑ¯ÊÇ·ñÔÚÏß*/
-        if (user.getUserstate()) {
+        /*æŸ¥è¯¢æ˜¯å¦åœ¨çº¿*/
+        if (user.getUserstate() != LOGIN_BACK_NOONLINE) {
             json res;
             res["msgId"] = LOG_MSG_BACK;
             res["type"] = LOGIN_BACK_ISONLINE;
@@ -71,7 +71,7 @@ void ChatService::login(const muduo::net::TcpConnectionPtr &conn, json &js, mudu
     }
 }
 
-/*×¢²áÒµÎñ*/
+/*æ³¨å†Œä¸šåŠ¡*/
 void ChatService::regist(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
     string name = js["name"];
     string passwd = js["passwd"];
@@ -93,7 +93,7 @@ void ChatService::regist(const muduo::net::TcpConnectionPtr &conn, json &js, mud
     user.setUserName(name);
     user.setUserPasswd(passwd);
     user.setUserQuestionIndex(question);
-    user.setUserState(0);
+    user.setUserState(LOGIN_BACK_NOONLINE);
     user.setUserAnswer(answer);
     
     bool res = userModel.insertUser(user);
@@ -111,48 +111,48 @@ void ChatService::regist(const muduo::net::TcpConnectionPtr &conn, json &js, mud
     }
 }
 
-/*Ò»¶ÔÒ»ÁÄÌì*/
+/*ä¸€å¯¹ä¸€èŠå¤©*/
 void ChatService::oneChat(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
 
 }
 
-/*Ìí¼ÓºÃÓÑ*/
+/*æ·»åŠ å¥½å‹*/
 void ChatService::addFriend(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
 
 }
 
-/*²éÑ¯ÅóÓÑ*/
+/*æŸ¥è¯¢æœ‹å‹*/
 void ChatService::searchFriend(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
 
 }
 
-/*²éÑ¯ÁÄÌì¼ÇÂ¼*/
+/*æŸ¥è¯¢èŠå¤©è®°å½•*/
 void ChatService::searchRecord(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
 
 }
 
-/*´´½¨ÈºÁÄ*/
+/*åˆ›å»ºç¾¤èŠ*/
 void ChatService::ChatService::createGroup(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
 
 }
 
-/*Ìí¼ÓÈº×é*/
+/*æ·»åŠ ç¾¤ç»„*/
 void ChatService::ChatService::addGroup(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
 
 }
 
-/*Èº×éÏûÏ¢*/
+/*ç¾¤ç»„æ¶ˆæ¯*/
 void ChatService::ChatService::groupMsg(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
 
 }
 
-/*×¢ÏúÒµÎñ*/
+/*æ³¨é”€ä¸šåŠ¡*/
 void ChatService::ChatService::loginOut(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
 
 }
 
 
-/*·şÎñÆ÷Òì³£ÒµÎñÖØÖÃ*/
+/*æœåŠ¡å™¨å¼‚å¸¸ä¸šåŠ¡é‡ç½®*/
 void ChatService::reset() {
 
 }

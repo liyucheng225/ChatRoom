@@ -3,10 +3,10 @@
 UserModel::UserModel(/* args */) {
 
 }
-/*Ôö¼Óuser*/
+/*å¢åŠ user*/
 bool UserModel::insertUser(User &user) {
     char sql[1024] = {0};
-    /*×é×°sqlÓï¾ä*/
+    /*ç»„è£…sqlè¯­å¥*/
     sprintf(sql,"insert into user(id, passwd, name, state, question, answer) values('%s', '%s','%s','%d','%d','%s');", 
             user.getUserId().c_str(),user.getUserPasswd().c_str(), user.getUserName().c_str(), user.getUserstate(), 
             user.getUserQuestionIndex(), user.getUserAnswer().c_str());
@@ -20,10 +20,10 @@ bool UserModel::insertUser(User &user) {
 
 }
 
-/*¸ù¾İÓÃ»§id²éÑ¯userĞÅÏ¢*/
+/*æ ¹æ®ç”¨æˆ·idæŸ¥è¯¢userä¿¡æ¯*/
 User UserModel::query(string id) {
     char sql[1024] = {0};
-    sprintf(sql, "select * from user where id=%s", id.c_str());
+    sprintf(sql, "select * from user where id=\"%s\";", id.c_str());
     MySQL mysql;
     if (mysql.connect()) {
         MYSQL_RES * res = mysql.query(sql);
@@ -34,7 +34,7 @@ User UserModel::query(string id) {
                 user.setUserId(row[0]);
                 user.setUserPasswd(row[1]);
                 user.setUserName(row[2]);
-                user.setUserState(row[3]);
+                user.setUserState(atoi(row[3]));
                 mysql_free_result(res);
                 return user;
             }
@@ -43,9 +43,9 @@ User UserModel::query(string id) {
     return User();
 }
 
-//¸üĞÂ×´Ì¬ĞÅÏ¢
+//æ›´æ–°çŠ¶æ€ä¿¡æ¯
 bool UserModel::updateState(User user) {
-    //×é×°SQLÓï¾ä
+    //ç»„è£…SQLè¯­å¥
     char sql[1024] = {0};
     sprintf(sql, "update user set state='%d'  where id=%s;", user.getUserstate(), user.getUserId().c_str());
     MySQL mysql;
@@ -60,7 +60,7 @@ bool UserModel::updateState(User user) {
     return false;
 }
 bool UserModel::updateUser(User user) {
-    //×é×°SQLÓï¾ä
+    //ç»„è£…SQLè¯­å¥
     char sql[1024] = {0};
     sprintf(sql, "update user set name='%s',passwd = '%s'  where id=%s;", user.getUserName().c_str(), user.getUserPasswd().c_str(), user.getUserId().c_str());
     MySQL mysql;
@@ -74,10 +74,10 @@ bool UserModel::updateUser(User user) {
     return false;
 
 }
-/*¸ù¾İÓÃ»§id²éÑ¯idÊÇ·ñ´æÔÚ*/
+/*æ ¹æ®ç”¨æˆ·idæŸ¥è¯¢idæ˜¯å¦å­˜åœ¨*/
 bool UserModel::queryId(string id) {
     char sql[1024] = {0};
-    sprintf(sql, "select * from user where id=%s", id.c_str());
+    sprintf(sql, "select * from user where id=%s;", id.c_str());
     MySQL mysql;
     if (mysql.connect()) {
         MYSQL_RES * res = mysql.query(sql);
@@ -93,9 +93,9 @@ bool UserModel::queryId(string id) {
     }
     return false;
 }
-//ÖØÖÃÓÃ»§×´Ì¬ĞÅÏ¢
+//é‡ç½®ç”¨æˆ·çŠ¶æ€ä¿¡æ¯
 bool UserModel::reset_state() {
-      //×é×°SQLÓï¾ä
+      //ç»„è£…SQLè¯­å¥
     char sql[1024] = {0};
     sprintf(sql, "update User set state='0'  where state='1';");
     //cout << sql << endl;

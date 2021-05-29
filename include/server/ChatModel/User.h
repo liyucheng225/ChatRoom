@@ -9,18 +9,18 @@ using namespace std;
 class User
 {
 public:
-    User(string userId, string userName, string userPasswd, int questionIndex, bool state);
+    User(string userId, string userName, string userPasswd, int questionIndex, int state);
     void setUserName(string userName);
     void setUserPasswd(string userPasswd);
     void setUserId(string userId);
-    void setUserState(bool state);
+    void setUserState(int state);
     void setUserQuestionIndex(int index);
     void setUserAnswer(string answer);
 
     string getUserId();
     string getUserName();
     string getUserPasswd();
-    bool getUserstate();
+    int getUserstate();
     int getUserQuestionIndex();
     string getUserAnswer();
     User();
@@ -32,7 +32,7 @@ private:
     string userPasswd; //用户密码
     int questionIndex;//密保问题序号
     string answer; //密保答案
-    bool state; //用户在线状态
+    int state; //用户在线状态
 };
 
 #endif

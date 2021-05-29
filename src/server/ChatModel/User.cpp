@@ -1,6 +1,6 @@
 #include "User.h"
 
-User::User(string userId, string userName, string userPasswd, int index, bool state) {
+User::User(string userId, string userName, string userPasswd, int index, int state) {
     this->userId =userId;
     this->userName = userName;
     this->userPasswd = userPasswd;
@@ -20,7 +20,7 @@ string User::getUserPasswd() {
     return userPasswd;
 }
 
-bool User::getUserstate() {
+int User::getUserstate() {
     return state;
 }
 int User::getUserQuestionIndex() {
@@ -48,8 +48,10 @@ void User::setUserId(string userId) {
     this->userId = userId;
 }
 
-void User::setUserState(bool state) {
+void User::setUserState(int state) {
+    cout << this->state << state << endl;
     this->state = state;
+    cout << this->state << state << endl;
 }   
 User::User() {
 

@@ -21,6 +21,8 @@ enum MsgType {
     LOGIN_BACK_SUCCESS,//登陆成功
     LOGIN_BACK_ISONLINE,//登陆用户以在线    
     LOGIN_BACK_EMPTY,//登陆用户不存在
+    LOGIN_BACK_NOONLINE,//用户不在线
+
 };
 
 #endif

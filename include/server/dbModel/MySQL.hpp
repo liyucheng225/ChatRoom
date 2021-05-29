@@ -16,7 +16,7 @@ public:
     MySQL(/* args */) {
         conn = mysql_init(nullptr);
     }
-        //ÊÍ·ÅÁ¬½Ó
+        //é‡Šæ”¾è¿æ¥
     ~MySQL() {
         if (conn != nullptr)
         {
@@ -24,24 +24,23 @@ public:
         }
     }
 
-    //Á¬½ÓÊı¾İ¿â
+    //è¿æ¥æ•°æ®åº“
     bool connect() {
         MYSQL *p = mysql_real_connect(conn, SERVER , USER, PASSWD, BASENAME, 0, nullptr, 0);
         if (p != nullptr) {
-            //´úÂëÖ§³ÖÖĞÎÄ£¬ÒòÎªÄ¬ÈÏÊÇASCII
-            mysql_query(conn, "set names gbk");
+            //ä»£ç æ”¯æŒä¸­æ–‡ï¼Œå› ä¸ºé»˜è®¤æ˜¯ASCII
+            mysql_query(conn, "set names utf-8");
             LOG_INFO << "connect mysql success!";
         }
         else {
             LOG_INFO << "connect mysql fail!";
         }
-
+        cout << "conn" << endl;
         return p;
     }
 
-    //¸üĞÂ²Ù×÷
+    //æ›´æ–°æ“ä½œ
     bool update(string sql) {
-        cout << "update" << endl;
         if (mysql_query(conn, sql.c_str())) {
             LOG_INFO << __FILE__ << " : " << __LINE__ << " : " << sql << " update error!";
             return false;
@@ -49,7 +48,7 @@ public:
         return true;
     }
 
-    //²éÑ¯²Ù×÷
+    //æŸ¥è¯¢æ“ä½œ
     MYSQL_RES *query(string sql) {
         if (mysql_query(conn, sql.c_str())) {
             LOG_INFO << __FILE__ << " : " << __LINE__ << " : " << sql << " select error!";
@@ -58,7 +57,7 @@ public:
         return mysql_use_result(conn);
     }
 
-    //»ñÈ¡Á¬½Ó
+    //è·å–è¿æ¥
     MYSQL *get_connection() {
         return conn;
     }
