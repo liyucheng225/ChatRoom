@@ -26,3 +26,9 @@ string Group::getGroupName() {
 vector<GroupUser> Group::getUser() {
     return user;
 }
+Group::Group() {
+
+}
+Group::~Group() {
+    
+}

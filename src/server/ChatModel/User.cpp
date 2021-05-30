@@ -1,6 +1,6 @@
 #include "User.h"
 
-User::User(string userId, string userName, string userPasswd, int index, int state) {
+User::User(int userId, string userName, string userPasswd, int index, int state, string answer) {
     this->userId =userId;
     this->userName = userName;
     this->userPasswd = userPasswd;
@@ -8,7 +8,7 @@ User::User(string userId, string userName, string userPasswd, int index, int sta
     this->questionIndex = index;
     this->answer = answer;
 }
-string User::getUserId() {
+int User::getUserId() {
     return userId;
 }
 
@@ -44,7 +44,7 @@ void User::setUserPasswd(string userPasswd) {
     this->userPasswd = userPasswd;
 }
 
-void User::setUserId(string userId) {
+void User::setUserId(int userId) {
     this->userId = userId;
 }
 

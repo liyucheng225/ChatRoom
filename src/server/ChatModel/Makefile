@@ -1,4 +1,4 @@
-INCLUDE = -I ../../../include/server/ChatModel
+INCLUDE = -I ../../../include/server/ChatModel -I ../../../include/server/dbModel
 OBJ = ../../../build/release/
 SOURCES = $(wildcard *.cpp)
 OBJS = $(patsubst %.cpp, %.o, $(SOURCES))

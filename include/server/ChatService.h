@@ -55,7 +55,7 @@ public:
     /*服务器异常业务重置*/
     void reset();
 
-    void createRandNum(string &id);
+    int createRandNum(int number);
 
     
 private:
@@ -68,7 +68,7 @@ private:
     unordered_map<int,MsgHandler> msg_handler_map;
 
     /*存储在线用户的链接情况，便于服务器给用户发消息，注意线程安全*/
-    unordered_map<string,muduo::net::TcpConnectionPtr> user_connection_map;
+    unordered_map<int,muduo::net::TcpConnectionPtr> user_connection_map;
     mutex conn_mutex;
 
     UserModel userModel;

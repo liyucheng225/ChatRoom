@@ -16,6 +16,7 @@ public:
     string getGroupDesc();
     string getGroupName();
     vector<GroupUser> getUser();
+    Group();
     ~Group();
 private:
     /* data */

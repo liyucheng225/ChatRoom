@@ -13,15 +13,15 @@ public:
     bool insertUser(User &user);
 
     /*根据用户id查询user信息*/
-    User query(string id);
+    User query(int id);
 
     //更新状态信息
     bool updateState(User user);
     bool updateUser(User user);
-    bool queryId(string id);
+    bool queryId(int id);
 
     //重置用户状态信息
-    bool reset_state();
+    bool resetState(int state, int id);
 
     ~UserModel();
 };
