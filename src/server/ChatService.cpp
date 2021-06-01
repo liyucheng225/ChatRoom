@@ -65,12 +65,65 @@ void ChatService::login(const muduo::net::TcpConnectionPtr &conn, json &js, mudu
             res["type"] = LOGIN_BACK_ISONLINE;
             conn->send(res.dump());
         } else {
-            user_connection_map.insert({id,conn}); //保存在线用户的信息，用来发送消息
+            {
+                lock_guard<mutex> lock(conn_mutex); //分别在构造和析构函数中上和解锁
+                user_connection_map.insert({id,conn}); //保存在线用户的信息，用来发送消息
+            }
             // user.setUserState(LOGIN_BACK_ISONLINE); //设置该用户为在线状态
             userModel.resetState(LOGIN_BACK_ISONLINE, id);
+
+            //组装回复信息，包括该用户信息，该用户所在群组信息，该用户好友信息
             json res;
             res["msgId"] = LOG_MSG_BACK;
             res["type"] = LOGIN_BACK_SUCCESS;
+
+            //用户信息
+            res["id"] = user.getUserId();
+            res["name"] = user.getUserName();
+
+            //用户好友信息
+            vector<User> friendList = friendModel.query(user.getUserId()); //查询用户好友列表;
+            if (!friendList.empty()) {
+                vector<string> friendRes;
+                for (User &friend_ : friendList) {
+                    cout << "返回的用户好友id" << friend_.getUserId() << endl;
+                    json js;
+                    js["id"] = friend_.getUserId();
+                    js["name"] = friend_.getUserName();
+                    js["state"] = friend_.getUserstate();
+                    friendRes.push_back(js.dump());
+                }
+                res["friend"] = friendRes;
+                cout << "好友信息：" << res["friend"] << endl;
+            }
+
+            //用户群组信息
+            vector<Group> groupList;
+            groupList = groupModel.queryGroup(user.getUserId());
+            if (!groupList.empty()) {
+                vector<string> groupRes;
+                for (Group &group_: groupList) {
+                    cout  << "群名：" << group_.getGroupName() << endl;
+                    json groupJs;
+                    groupJs["id"] = group_.getGroupId();
+                    groupJs["name"] = group_.getGroupName();
+                    groupJs["desc"] = group_.getGroupDesc();
+                    vector<string> groupUserRes;
+                    for (GroupUser &groupUser_ : group_.getUser()) {
+                        json js;
+                        js["id"] = groupUser_.getUserId();
+                        js["name"] = groupUser_.getUserName();
+                        js["state"] = groupUser_.getUserstate();
+                        js["role"] = groupUser_.getRole();
+                        cout << "jsjs::" << js << endl;
+                        groupUserRes.push_back(js.dump());
+                    }
+                    groupJs["users"] = groupUserRes;
+                    groupRes.push_back(groupJs.dump());
+                }
+                res["groups"] = groupRes;
+            }
+            cout << "回复消息：" << res.dump() << endl;
             conn->send(res.dump());
         }
 
@@ -125,12 +178,21 @@ void ChatService::regist(const muduo::net::TcpConnectionPtr &conn, json &js, mud
 
 /*一对一聊天*/
 void ChatService::oneChat(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
+    int id = js["id"].get<int>();
+    auto it = user_connection_map.find(id);
+    if (it != user_connection_map.end()) {
+        it->second->send(js.dump());
+    } else {
+        //存储离线消息
+    }
 
 }
 
 /*添加好友*/
 void ChatService::addFriend(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
-
+    int id = js["id"].get<int>();
+    int friendId = js["friendId"].get<int>();
+    friendModel.insert(id, friendId);
 }
 
 /*查询朋友*/
@@ -145,17 +207,29 @@ void ChatService::searchRecord(const muduo::net::TcpConnectionPtr &conn, json &j
 
 /*创建群聊*/
 void ChatService::ChatService::createGroup(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
-
+    Group group;
+    int id;
+    group.setGroupName(js["name"]);
+    group.setGroupoDesc(js["desc"]);
+    int id = createRandNum(6);
+    bool isIdEmpty = groupModel.queryId(id);
+    while (isIdEmpty) {
+        id = createRandNum(6);
+        isIdEmpty = groupModel.queryId(id);
+    }
+    group.setGroupId(id);
 }
 
 /*添加群组*/
 void ChatService::ChatService::addGroup(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
-
+    int id = js["id"].get<int>();
+    int groupId = js["groupId"].get<int>();
+    groupModel.addGroup(id, groupId,"组员");
 }
 
 /*群组消息*/
 void ChatService::ChatService::groupMsg(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
-
+    
 }
 
 /*

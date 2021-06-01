@@ -24,6 +24,7 @@ bool UserModel::insertUser(User &user) {
 User UserModel::query(int id) {
     char sql[1024] = {0};
     sprintf(sql, "select * from user where id=\"%d\";", id);
+    cout << sql << endl;
     MySQL mysql;
     if (mysql.connect()) {
         MYSQL_RES * res = mysql.query(sql);
@@ -48,6 +49,7 @@ bool UserModel::updateState(User user) {
     //组装SQL语句
     char sql[1024] = {0};
     sprintf(sql, "update user set state='%d'  where id=%d;", user.getUserstate(), user.getUserId());
+    cout << sql << endl;
     MySQL mysql;
     if (mysql.connect())
     {
@@ -64,6 +66,7 @@ bool UserModel::updateUser(User user) {
     char sql[1024] = {0};
     sprintf(sql, "update user set name='%s',passwd = '%s'  where id=%d;", 
             user.getUserName().c_str(), user.getUserPasswd().c_str(), user.getUserId());
+    cout << sql << endl;
     MySQL mysql;
     if (mysql.connect())
     {
@@ -79,6 +82,7 @@ bool UserModel::updateUser(User user) {
 bool UserModel::queryId(int id) {
     char sql[1024] = {0};
     sprintf(sql, "select * from user where id=%d;", id);
+    cout << sql << endl;
     MySQL mysql;
     if (mysql.connect()) {
         MYSQL_RES * res = mysql.query(sql);
@@ -99,8 +103,7 @@ bool UserModel::resetState(int state, int id) {
       //组装SQL语句
     char sql[1024] = {0};
     sprintf(sql, "update user set state=%d where id=%d;", state, id);
-    //cout << sql << endl;
-
+    cout << sql << endl;
     MySQL mysql;
     if (mysql.connect())
     {

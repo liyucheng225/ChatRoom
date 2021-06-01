@@ -8,7 +8,7 @@ Group::Group(int id, string name, string desc){
 void Group::setGroupId(int groupId) {
     this->groupId = groupId;
 }
-void Group::setGroupName(string name) {
+void Group::setGroupName(string groupName) {
     this->groupName = groupName;
 }
 void Group::setGroupoDesc(string desc) {
@@ -23,7 +23,8 @@ string Group::getGroupDesc() {
 string Group::getGroupName() {
     return groupName;
 }
-vector<GroupUser> Group::getUser() {
+vector<GroupUser> &Group::getUser() {
+
     return user;
 }
 Group::Group() {

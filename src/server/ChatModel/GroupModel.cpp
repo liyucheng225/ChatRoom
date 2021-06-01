@@ -15,7 +15,7 @@ bool GroupModel::createGroup(Group &group)
 
 }
 
-//¼ÓÈëÈº×é
+//åŠ å…¥ç¾¤ç»„
 bool GroupModel::addGroup(int userId, int groupId, string role)
 {   
     char sql[1024] = {0};
@@ -29,10 +29,10 @@ bool GroupModel::addGroup(int userId, int groupId, string role)
     return false;
 }
 
-//²éÑ¯ÓÃ»§ËùÔÚÈº×éĞÅÏ¢
+//æŸ¥è¯¢ç”¨æˆ·æ‰€åœ¨ç¾¤ç»„ä¿¡æ¯
 vector<Group> GroupModel::queryGroup(int userId)
 {
-    //²éÑ¯¸ÃÓÃ»§ËùÓĞµÄÈº×é
+    //æŸ¥è¯¢è¯¥ç”¨æˆ·æ‰€æœ‰çš„ç¾¤ç»„
     char sql[1024] = {0};
     sprintf(sql, "select a.groupId,a.groupName,a.groupDesc from chatgroup a inner join groupuser b on b.groupId=a.groupId where b.userId=%d;",userId);
     vector<Group> v;
@@ -40,34 +40,39 @@ vector<Group> GroupModel::queryGroup(int userId)
     if (mysql.connect()) {
         MYSQL_RES *res = mysql.query(sql);
         if (res != nullptr) {
-            MYSQL_ROW row = mysql_fetch_row(res);
-            while (row != nullptr) {
+            MYSQL_ROW row;
+            while ((row = mysql_fetch_row(res)) != nullptr) {
+                cout << "æŸ¥è¯¢ç¾¤ï¼š" << row[0] << " " << row[1] << " " << row[2] << endl;
                 Group group;
                 group.setGroupId(atoi(row[0]));
                 group.setGroupName(row[1]);
                 group.setGroupoDesc(row[2]);
                 v.push_back(group);
+                cout << "ç¾¤id:" << group.getGroupId() << ",name:" << group.getGroupName() << endl;
             }
             mysql_free_result(res);
         }
     }
 
-     //²éÑ¯ËùÓĞÈº×éËùÓĞÈºÔ±µÄĞÅÏ¢
+     //æŸ¥è¯¢æ‰€æœ‰ç¾¤ç»„æ‰€æœ‰ç¾¤å‘˜çš„ä¿¡æ¯
     for (Group &temp : v)
     {
         sprintf(sql, "select a.id,a.name,a.state,b.groupRole from user a inner join groupuser b on b.userId=a.id where b.groupId=%d;", temp.getGroupId());
         MYSQL_RES *res = mysql.query(sql);
-        if (res != nullptr)
-        {
+        if (res != nullptr) {
             MYSQL_ROW row;
-            while ((row = mysql_fetch_row(res)) != nullptr)
-            {
+            while ((row = mysql_fetch_row(res)) != nullptr) {
                 GroupUser groupUser;
                 groupUser.setUserId(atoi(row[0]));
                 groupUser.setUserName(row[1]);
                 groupUser.setUserState(atoi(row[2]));
                 groupUser.setRole(row[3]);
                 temp.getUser().push_back(groupUser);
+                cout << "ç¾¤æˆå‘˜åç§°ï¼š";
+                for (auto n : temp.getUser()) {
+                    cout << "ç¾¤æˆå‘˜åç§°1ï¼š" << n.getUserId() << endl;
+                }
+                cout << "ç¾¤æˆå‘˜" << groupUser.getUserId() << "Name:" << groupUser.getUserName() <<endl;
             }
             mysql_free_result(res);
         }
@@ -75,26 +80,44 @@ vector<Group> GroupModel::queryGroup(int userId)
     return v;
 }
 
-/*¸ù¾İÖ¸¶¨µÄÓÃ»§id²éÑ¯ÖÆ¶¨µÄÈº×éÀïÃæµÄÓÃ»§ÁĞ±í£¬·µ»Ø¸ÃÈº×éÖĞ³ı¸ÃÓÃ»§ÍâµÄÁĞ±í*/
+/*æ ¹æ®æŒ‡å®šçš„ç”¨æˆ·idæŸ¥è¯¢åˆ¶å®šçš„ç¾¤ç»„é‡Œé¢çš„ç”¨æˆ·åˆ—è¡¨ï¼Œè¿”å›è¯¥ç¾¤ç»„ä¸­é™¤è¯¥ç”¨æˆ·å¤–çš„åˆ—è¡¨*/
 vector<int> GroupModel::queryGroupUsers(int userId, int groupId)
 {
-     //×é×°SQLÓï¾ä
+     //ç»„è£…SQLè¯­å¥
     char sql[1024] = {0};
-    sprintf(sql, "select userid  from groupuser where groupId=%d and userId != %d;", groupId, userId);
+    sprintf(sql, "select userId  from groupuser where groupId=%d and userId != %d;", groupId, userId);
 
     vector<int> v;
     MySQL mysql;
     if (mysql.connect())
     {
         MYSQL_RES *res = mysql.query(sql);
-        if (res != nullptr)
-        {
+        if (res != nullptr) {
             MYSQL_ROW row;
-            while ((row = mysql_fetch_row(res)) != nullptr)
-            {
+            while ((row = mysql_fetch_row(res)) != nullptr) { 
                 v.push_back(atoi(row[0]));
             }
             mysql_free_result(res);
         }
     }
     return v;
+}
+/*æ ¹æ®ç”¨æˆ·idæŸ¥è¯¢idæ˜¯å¦å­˜åœ¨*/
+bool GroupModel::queryId(int id) {
+    char sql[1024] = {0};
+    sprintf(sql, "select * from chatgroup where groupId=%d;", id);
+    MySQL mysql;
+    if (mysql.connect()) {
+        MYSQL_RES * res = mysql.query(sql);
+        if (res != nullptr) {
+            MYSQL_ROW row = mysql_fetch_row(res);
+            if (row != nullptr) {
+                if (atoi(row[0]) == id) {
+                    mysql_free_result(res);
+                    return true;
+                }          
+            }
+        }
+    }
+    return false;
+}

@@ -49,9 +49,7 @@ void User::setUserId(int userId) {
 }
 
 void User::setUserState(int state) {
-    cout << this->state << state << endl;
     this->state = state;
-    cout << this->state << state << endl;
 }   
 User::User() {
 

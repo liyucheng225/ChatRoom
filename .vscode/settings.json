@@ -20,6 +20,7 @@
         "list": "cpp",
         "vector": "cpp",
         "ostream": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "typeindex": "cpp"
     }
 }
