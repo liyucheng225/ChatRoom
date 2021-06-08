@@ -178,14 +178,15 @@ void ChatService::regist(const muduo::net::TcpConnectionPtr &conn, json &js, mud
 
 /*一对一聊天*/
 void ChatService::oneChat(const muduo::net::TcpConnectionPtr &conn, json &js, muduo::Timestamp time) {
-    int id = js["id"].get<int>();
+    cout << "一对一聊天模块服务" << endl;
+    int id = js["friendId"].get<int>();
+    cout << "发送给" << id << endl;
     auto it = user_connection_map.find(id);
     if (it != user_connection_map.end()) {
         it->second->send(js.dump());
     } else {
         //存储离线消息
     }
-
 }
 
 /*添加好友*/
@@ -211,7 +212,7 @@ void ChatService::ChatService::createGroup(const muduo::net::TcpConnectionPtr &c
     int id;
     group.setGroupName(js["name"]);
     group.setGroupoDesc(js["desc"]);
-    int id = createRandNum(6);
+    id = createRandNum(6);
     bool isIdEmpty = groupModel.queryId(id);
     while (isIdEmpty) {
         id = createRandNum(6);
